@@ -1,0 +1,37 @@
+#%RAML 1.0
+title: Retrieves PNR information
+description: This RAML file retrieves the PNR information from the flight booking confirmation number
+
+uses:
+  common: /libraries/comms-api/common/commsApiBusiness-library.raml
+
+types:
+  commonError: !include /libraries/common/dataTypes/commons-error-dataType.raml
+
+/comms-api:
+  /pnr:
+      get:
+        is:
+          - common.confirmationNumber
+        responses:
+          200:
+            body:
+              application/xml:
+                description: "Successfully returned PNR information" 
+                example: !include /libraries/comms-api/pnr/examples/getPnrInformation-200Response-example.xml
+          400:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/400Response-example.json
+          404:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/404Response-example.json
+          500:
+            body:
+              application/json:
+                type: commonError
+                example: !include /libraries/common/examples/500Response-example.json
+                  

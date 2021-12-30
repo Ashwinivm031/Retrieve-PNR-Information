@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+     <flow name="retrieves-pnr-information-main">
+        <http:listener config-ref="retrieves-pnr-information-httpListenerConfig" path="/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body ><![CDATA[#[payload]]]></http:body>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="retrieves-pnr-information-config" />
+        <error-handler ref="globalErrorHandlerError_Handler">
+            
+        </error-handler>
+    </flow>
+    <flow name="retrieves-pnr-information-console">
+        <http:listener config-ref="retrieves-pnr-information-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="retrieves-pnr-information-config" />
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+    <sub-flow name="retrievePnrInformation-InitializeRequestVariables-Sub_Flow" doc:id="e6c99429-72e1-45e8-b2a4-fdf457cb0c07" >
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/xml
+---
+{
+  pnrInfo: {
+    responseStatusDto: {
+      warnings: null,
+      errors: null
+    },
+    travelerDTOs: {
+      id: "151568070",
+      flight: {
+        "type": null,
+        flightId: "1172181",
+        date: "2021-08-28",
+        flightNumber: "413",
+        leg: "1",
+        flightStatus: "OT",
+        flightType: "RF",
+        divertCode: null,
+        cancelReason: null,
+        readyForBoarding: "true",
+        comments: null,
+        seats: {
+          total: "177",
+          open: "165",
+          booked: "12",
+          checked: "0",
+          waitlist: "0",
+          capacity: "186"
+        },
+        scheduled: {
+          aircraftType: "32B",
+          tail: null,
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "AVL",
+          destination: "DEN",
+          departureLocal: "2021-08-28T08:00:00.000",
+          departureGMT: "2021-08-28T12:00:00.000",
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-08-28T09:14:00.000",
+          arrivalGMT: "2021-08-28T15:14:00.000"
+        },
+        estimated: {
+          aircraftType: null,
+          tail: null,
+          make: null,
+          market: null,
+          origin: null,
+          destination: null,
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: null,
+          arrivalGMT: null
+        },
+        actual: {
+          aircraftType: "32B",
+          tail: "253NV",
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "AVL",
+          destination: "DEN",
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-08-28T08:51:00.000",
+          arrivalGMT: "2021-08-28T14:51:00.000"
+        },
+        id: null,
+        category: "SF",
+        departureStatus: {
+          status: "ON_TIME",
+          locationCode: "AVL",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        arrivalStatus: {
+          status: "ARRIVED",
+          locationCode: "DEN",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        delays: null,
+        passengers: null,
+        bags: null,
+        dispositionReasons: null
+      },
+      paxNum: "1",
+      segment: "1A",
+      firstName: "ALICIA",
+      lastName: "WILSON",
+      middleName: null,
+      dob: "1971-01-01",
+      gender: "F",
+      knownTraveler: "TT129H979",
+      redressNbr: null,
+      confirmationNum: "9VR6TQ",
+      confirmationId: "56783992",
+      volunteer: "false",
+      bookType: "WB",
+      employeeHireDate: null,
+      carryOnBagCount: "0",
+      checkedBagCount: "1",
+      typeIndicator: null,
+      standByPassenger: "false",
+      standByPriority: null,
+      acknowledgmentRequired: "false",
+      docsVerified: "false",
+      seats: null,
+      bags: {
+        id: null,
+        "type": "PP",
+        number: "1",
+        fee: "35",
+        weight: "0",
+        overweightLevel: "0",
+        heavy: "false",
+        oversized: "false",
+        printed: "false",
+        equipmentType: null
+      },
+      boardingPass: {
+        qrCodeBase64: null,
+        bar2DCodeBase64: null
+      },
+      authorization: {
+        status: "false",
+        statusCode: null,
+        createdAt: "2021-12-28T06:03:52.627+0000",
+        dhsTransmitted: "false",
+        bpSsss: "false",
+        travelDoc: "false",
+        sendToDhsEnabled: "false",
+        knownTraveler: "false"
+      },
+      checkIn: {
+        status: "false",
+        withinWindow: "false",
+        method: null,
+        groupZone: "UNASSIGNED",
+        groupIndex: "10",
+        createdAt: null,
+        eligibility: {
+          channel: "1",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "4",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "19",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "23",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "3",
+          status: "false",
+          journeyStatusCode: "FALSE_ONLINE_CHECKIN_TURNED_OFF",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        searchable: "true"
+      },
+      board: {
+        status: "false",
+        createdAt: "2021-12-28T06:03:52.496+0000",
+        eligibility: "false",
+        boardingZone: "UNASSIGNED"
+      },
+      contacts: null,
+      ssrs: null,
+      asrlStatus: {
+        active: "false",
+        originalSeat: null,
+        newSeat: null
+      },
+      emergencyContact: null,
+      bagtags: null,
+      travelerIdentifications: null,
+      addressWhileInUS: null,
+      finalDestination: "DEN",
+      securityCheckVerifiedId: null
+    },
+    travelerDTOs: {
+      id: "151568074",
+      flight: {
+        "type": null,
+        flightId: "1172181",
+        date: "2021-08-28",
+        flightNumber: "413",
+        leg: "1",
+        flightStatus: "OT",
+        flightType: "RF",
+        divertCode: null,
+        cancelReason: null,
+        readyForBoarding: "true",
+        comments: null,
+        seats: {
+          total: "177",
+          open: "165",
+          booked: "12",
+          checked: "0",
+          waitlist: "0",
+          capacity: "186"
+        },
+        scheduled: {
+          aircraftType: "32B",
+          tail: null,
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "AVL",
+          destination: "DEN",
+          departureLocal: "2021-08-28T08:00:00.000",
+          departureGMT: "2021-08-28T12:00:00.000",
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-08-28T09:14:00.000",
+          arrivalGMT: "2021-08-28T15:14:00.000"
+        },
+        estimated: {
+          aircraftType: null,
+          tail: null,
+          make: null,
+          market: null,
+          origin: null,
+          destination: null,
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: null,
+          arrivalGMT: null
+        },
+        actual: {
+          aircraftType: "32B",
+          tail: "253NV",
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "AVL",
+          destination: "DEN",
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-08-28T08:51:00.000",
+          arrivalGMT: "2021-08-28T14:51:00.000"
+        },
+        id: null,
+        category: "SF",
+        departureStatus: {
+          status: "ON_TIME",
+          locationCode: "AVL",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        arrivalStatus: {
+          status: "ARRIVED",
+          locationCode: "DEN",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        delays: null,
+        passengers: null,
+        bags: null,
+        dispositionReasons: null
+      },
+      paxNum: "2",
+      segment: "1A",
+      firstName: "DARRYL",
+      lastName: "REED",
+      middleName: null,
+      dob: "1971-01-01",
+      gender: "M",
+      knownTraveler: null,
+      redressNbr: null,
+      confirmationNum: "9VR6TQ",
+      confirmationId: "56783992",
+      volunteer: "false",
+      bookType: "WB",
+      employeeHireDate: null,
+      carryOnBagCount: "0",
+      checkedBagCount: "0",
+      typeIndicator: null,
+      standByPassenger: "false",
+      standByPriority: null,
+      acknowledgmentRequired: "false",
+      docsVerified: "false",
+      seats: null,
+      bags: null,
+      boardingPass: {
+        qrCodeBase64: null,
+        bar2DCodeBase64: null
+      },
+      authorization: {
+        status: "false",
+        statusCode: null,
+        createdAt: "2021-12-28T06:03:52.627+0000",
+        dhsTransmitted: "false",
+        bpSsss: "false",
+        travelDoc: "false",
+        sendToDhsEnabled: "false",
+        knownTraveler: "false"
+      },
+      checkIn: {
+        status: "false",
+        withinWindow: "false",
+        method: null,
+        groupZone: "UNASSIGNED",
+        groupIndex: "10",
+        createdAt: null,
+        eligibility: {
+          channel: "1",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "4",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "19",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "23",
+          status: "false",
+          journeyStatusCode: "FALSE_AFTER_CHECKIN_WINDOW",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "3",
+          status: "false",
+          journeyStatusCode: "FALSE_ONLINE_CHECKIN_TURNED_OFF",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        searchable: "true"
+      },
+      board: {
+        status: "false",
+        createdAt: "2021-12-28T06:03:52.496+0000",
+        eligibility: "false",
+        boardingZone: "UNASSIGNED"
+      },
+      contacts: null,
+      ssrs: null,
+      asrlStatus: {
+        active: "false",
+        originalSeat: null,
+        newSeat: null
+      },
+      emergencyContact: null,
+      bagtags: null,
+      travelerIdentifications: null,
+      addressWhileInUS: null,
+      finalDestination: "DEN",
+      securityCheckVerifiedId: null
+    },
+    travelerDTOs: {
+      id: "151568075",
+      flight: {
+        "type": null,
+        flightId: "1172202",
+        date: "2021-09-01",
+        flightNumber: "414",
+        leg: "1",
+        flightStatus: "OT",
+        flightType: "RF",
+        divertCode: null,
+        cancelReason: null,
+        readyForBoarding: "false",
+        comments: null,
+        seats: {
+          total: "177",
+          open: "158",
+          booked: "19",
+          checked: "0",
+          waitlist: "0",
+          capacity: "186"
+        },
+        scheduled: {
+          aircraftType: "32B",
+          tail: null,
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "DEN",
+          destination: "AVL",
+          departureLocal: "2021-09-01T15:22:00.000",
+          departureGMT: "2021-09-01T21:22:00.000",
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-09-01T20:12:00.000",
+          arrivalGMT: "2021-09-02T00:12:00.000"
+        },
+        estimated: {
+          aircraftType: null,
+          tail: null,
+          make: null,
+          market: null,
+          origin: null,
+          destination: null,
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: null,
+          arrivalGMT: null
+        },
+        actual: {
+          aircraftType: "32B",
+          tail: "253NV",
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "DEN",
+          destination: "AVL",
+          departureLocal: "2021-09-01T15:19:00.000",
+          departureGMT: "2021-09-01T21:19:00.000",
+          offLocal: "2021-09-01T15:30:00.000",
+          offGMT: "2021-09-01T21:30:00.000",
+          arrivalLocal: "2021-09-01T20:01:00.000",
+          arrivalGMT: "2021-09-02T00:01:00.000"
+        },
+        id: null,
+        category: "SF",
+        departureStatus: {
+          status: "DEPARTED",
+          locationCode: "DEN",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        arrivalStatus: {
+          status: "ARRIVED",
+          locationCode: "AVL",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        delays: null,
+        passengers: null,
+        bags: null,
+        dispositionReasons: null
+      },
+      paxNum: "1",
+      segment: "2A",
+      firstName: "ALICIA",
+      lastName: "WILSON",
+      middleName: null,
+      dob: "1971-01-01",
+      gender: "F",
+      knownTraveler: "TT129H979",
+      redressNbr: null,
+      confirmationNum: "9VR6TQ",
+      confirmationId: "56783992",
+      volunteer: "false",
+      bookType: "WB",
+      employeeHireDate: null,
+      carryOnBagCount: "0",
+      checkedBagCount: "1",
+      typeIndicator: null,
+      standByPassenger: "false",
+      standByPriority: null,
+      acknowledgmentRequired: "false",
+      docsVerified: "false",
+      seats: null,
+      bags: {
+        id: null,
+        "type": "PP",
+        number: "1",
+        fee: "35",
+        weight: "0",
+        overweightLevel: "0",
+        heavy: "false",
+        oversized: "false",
+        printed: "false",
+        equipmentType: null
+      },
+      boardingPass: {
+        qrCodeBase64: null,
+        bar2DCodeBase64: null
+      },
+      authorization: {
+        status: "false",
+        statusCode: null,
+        createdAt: "2021-12-28T06:03:52.627+0000",
+        dhsTransmitted: "false",
+        bpSsss: "false",
+        travelDoc: "false",
+        sendToDhsEnabled: "false",
+        knownTraveler: "false"
+      },
+      checkIn: {
+        status: "false",
+        withinWindow: "false",
+        method: null,
+        groupZone: "UNASSIGNED",
+        groupIndex: "10",
+        createdAt: null,
+        eligibility: {
+          channel: "1",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "4",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "19",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "23",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "3",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        searchable: "false"
+      },
+      board: {
+        status: "false",
+        createdAt: "2021-12-28T06:03:52.496+0000",
+        eligibility: "false",
+        boardingZone: "UNASSIGNED"
+      },
+      contacts: null,
+      ssrs: null,
+      asrlStatus: {
+        active: "false",
+        originalSeat: null,
+        newSeat: null
+      },
+      emergencyContact: null,
+      bagtags: null,
+      travelerIdentifications: null,
+      addressWhileInUS: null,
+      finalDestination: "AVL",
+      securityCheckVerifiedId: null
+    },
+    travelerDTOs: {
+      id: "151568077",
+      flight: {
+        "type": null,
+        flightId: "1172202",
+        date: "2021-09-01",
+        flightNumber: "414",
+        leg: "1",
+        flightStatus: "OT",
+        flightType: "RF",
+        divertCode: null,
+        cancelReason: null,
+        readyForBoarding: "false",
+        comments: null,
+        seats: {
+          total: "177",
+          open: "158",
+          booked: "19",
+          checked: "0",
+          waitlist: "0",
+          capacity: "186"
+        },
+        scheduled: {
+          aircraftType: "32B",
+          tail: null,
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "DEN",
+          destination: "AVL",
+          departureLocal: "2021-09-01T15:22:00.000",
+          departureGMT: "2021-09-01T21:22:00.000",
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: "2021-09-01T20:12:00.000",
+          arrivalGMT: "2021-09-02T00:12:00.000"
+        },
+        estimated: {
+          aircraftType: null,
+          tail: null,
+          make: null,
+          market: null,
+          origin: null,
+          destination: null,
+          departureLocal: null,
+          departureGMT: null,
+          offLocal: null,
+          offGMT: null,
+          arrivalLocal: null,
+          arrivalGMT: null
+        },
+        actual: {
+          aircraftType: "32B",
+          tail: "253NV",
+          make: "Airbus",
+          market: "AVLDEN",
+          origin: "DEN",
+          destination: "AVL",
+          departureLocal: "2021-09-01T15:19:00.000",
+          departureGMT: "2021-09-01T21:19:00.000",
+          offLocal: "2021-09-01T15:30:00.000",
+          offGMT: "2021-09-01T21:30:00.000",
+          arrivalLocal: "2021-09-01T20:01:00.000",
+          arrivalGMT: "2021-09-02T00:01:00.000"
+        },
+        id: null,
+        category: "SF",
+        departureStatus: {
+          status: "DEPARTED",
+          locationCode: "DEN",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        arrivalStatus: {
+          status: "ARRIVED",
+          locationCode: "AVL",
+          terminal: null,
+          gate: null,
+          baggageClaim: null,
+          domestic: "true"
+        },
+        delays: null,
+        passengers: null,
+        bags: null,
+        dispositionReasons: null
+      },
+      paxNum: "2",
+      segment: "2A",
+      firstName: "DARRYL",
+      lastName: "REED",
+      middleName: null,
+      dob: "1971-01-01",
+      gender: "M",
+      knownTraveler: null,
+      redressNbr: null,
+      confirmationNum: "9VR6TQ",
+      confirmationId: "56783992",
+      volunteer: "false",
+      bookType: "WB",
+      employeeHireDate: null,
+      carryOnBagCount: "0",
+      checkedBagCount: "0",
+      typeIndicator: null,
+      standByPassenger: "false",
+      standByPriority: null,
+      acknowledgmentRequired: "false",
+      docsVerified: "false",
+      seats: null,
+      bags: null,
+      boardingPass: {
+        qrCodeBase64: null,
+        bar2DCodeBase64: null
+      },
+      authorization: {
+        status: "false",
+        statusCode: null,
+        createdAt: "2021-12-28T06:03:52.628+0000",
+        dhsTransmitted: "false",
+        bpSsss: "false",
+        travelDoc: "false",
+        sendToDhsEnabled: "false",
+        knownTraveler: "false"
+      },
+      checkIn: {
+        status: "false",
+        withinWindow: "false",
+        method: null,
+        groupZone: "UNASSIGNED",
+        groupIndex: "10",
+        createdAt: null,
+        eligibility: {
+          channel: "1",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "4",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "19",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "23",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        eligibility: {
+          channel: "3",
+          status: "false",
+          journeyStatusCode: "FALSE_FLIGHT_DEPARTED",
+          travelerStatusCode: "FALSE_JOURNEY_CHECKIN_NOT_AVAILABLE"
+        },
+        searchable: "false"
+      },
+      board: {
+        status: "false",
+        createdAt: "2021-12-28T06:03:52.496+0000",
+        eligibility: "false",
+        boardingZone: "UNASSIGNED"
+      },
+      contacts: null,
+      ssrs: null,
+      asrlStatus: {
+        active: "false",
+        originalSeat: null,
+        newSeat: null
+      },
+      emergencyContact: null,
+      bagtags: null,
+      travelerIdentifications: null,
+      addressWhileInUS: null,
+      finalDestination: "AVL",
+      securityCheckVerifiedId: null
+    },
+    flightPassengerGroupsDto: {
+      zone1: {
+        index: "1",
+        travelers: null
+      },
+      zone2: {
+        index: "2",
+        travelers: null
+      },
+      zone3: {
+        index: "3",
+        travelers: null
+      },
+      zone4: {
+        index: "4",
+        travelers: null
+      },
+      zone5: {
+        index: "5",
+        travelers: null
+      },
+      zone6: {
+        index: "6",
+        travelers: null
+      },
+      zone7: {
+        index: "7",
+        travelers: null
+      },
+      onWaitingList: {
+        index: "8",
+        travelers: null
+      },
+      withSSR: {
+        index: "9",
+        travelers: null
+      },
+      withUnassignedSeats: {
+        index: "10",
+        travelers: "151568074",
+        travelers: "151568077",
+        travelers: "151568070",
+        travelers: "151568075"
+      }
+    }
+  }
+}]]></ee:set-payload>
+            </ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="confirmationNumber"><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.confirmationNumber]]></ee:set-variable>
+			</ee:variables>
+        </ee:transform>
+	</sub-flow>
+	<flow name="get:\comms-api\pnr:retrieves-pnr-information-config">
+		<flow-ref doc:name="Flow Reference" doc:id="0efd0cfb-974f-4577-bb3e-366d55432dfa" name="retrievePnrInformation-InitializeRequestVariables-Sub_Flow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a8dc19b6-233d-4f0d-89b4-f7ba02d6bd1f" message="Request recieved for getPnrInformation for ConfirmationNumber: #[vars.confirmationNumber] "/>
+		<flow-ref doc:name="Flow Reference" doc:id="f789ec5b-ca53-4a13-8e59-90926bb618a9" name="getPrnInformation-implementation-Sub_Flow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="975e75dc-30e5-4e32-a9d9-14ee031c9f7d" message="Response sent for getPnrInformation for ConfirmationNumber: #[vars.confirmationNumber] "/>
+		<error-handler ref="globalErrorHandlerError_Handler" />
+    </flow>
+</mule>
