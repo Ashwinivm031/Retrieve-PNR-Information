@@ -2,12 +2,19 @@
 title: Retrieves PNR information
 description: This RAML file retrieves the PNR information from the flight booking confirmation number
 
+mediaType: 
+- application/json
+
 uses:
   common: /libraries/comms-api/common/commsApiBusiness-library.raml
 
 types:
-  commonError: !include /libraries/common/dataTypes/commons-error-dataType.raml
+  commonError: !include /libraries/common/dataTypes/ErrorResponseDataType.raml
+  responseStatusDto: !include /libraries/comms-api/pnr/dataTypes/ResponseStatusDtoDataType.raml 
+  travelerResponseDto: !include /libraries/comms-api/pnr/dataTypes/TravelerDtoDataType.raml
+  flightPassengerGroupsDto: !include /libraries/comms-api/pnr/dataTypes/FlightPassengerGroupsDtoDataType.raml
 
+ 
 /comms-api:
   /pnr:
       get:
@@ -16,22 +23,28 @@ types:
         responses:
           200:
             body:
-              application/xml:
-                description: "Successfully returned PNR information" 
-                example: !include /libraries/comms-api/pnr/examples/getPnrInformation-200Response-example.xml
+                description: "PNR Information retrieved" 
+                properties:
+                  responseStatusDto:
+                    type: responseStatusDto
+                    example: !include /libraries/comms-api/pnr/examples/ResponseStatusDtoExample.raml
+                  travelerDTOs:
+                    type: travelerResponseDto[]
+                    example: !include /libraries/comms-api/pnr/examples/TravelersResponseDtoExample.raml
+                  flightPassengerGroupsDto:
+                    type: flightPassengerGroupsDto
+                    example: !include /libraries/comms-api/pnr/examples/FlightPassengerGroupDtoExample.raml                  
           400:
             body:
-              application/json:
                 type: commonError
-                example: !include /libraries/common/examples/400Response-example.json
+                example: !include /libraries/common/examples/400ResponseExample.raml
           404:
-            body:
-              application/json:
+            body: 
                 type: commonError
-                example: !include /libraries/common/examples/404Response-example.json
+                example: !include /libraries/common/examples/404ResponseExample.raml
           500:
             body:
-              application/json:
                 type: commonError
-                example: !include /libraries/common/examples/500Response-example.json
-                  
+                example: !include /libraries/common/examples/500ResponseExample.raml
+
+                    

@@ -1,0 +1,181 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  id: number
+  flight:
+    type: object
+    required: true
+    properties:
+      type: string | nil
+      flightId: number
+      date: string
+      flightNumber: string
+      leg: string
+      flightStatus: string
+      flightType: string
+      divertCode: string | nil
+      cancelReason: string | nil
+      readyForBoarding: boolean
+      comments: string | nil
+      seats:
+        type: object
+        properties:
+          total: integer
+          open: integer
+          booked: integer
+          checked: integer
+          waitlist: integer
+          capacity: integer
+      scheduled:
+        type: object
+        properties:
+          aircraftType: string | nil
+          tail?: string | nil
+          make: string | nil
+          market: string | nil
+          origin: string | nil
+          destination: string | nil
+          departureLocal: string | nil
+          departureGMT: string | nil
+          offLocal: string | nil
+          offGMT: string | nil
+          arrivalLocal: string | nil
+          arrivalGMT: string | nil
+      estimated:
+        type: object
+        properties:
+          aircraftType: string | nil
+          tail?: string | nil
+          make: string | nil
+          market: string | nil
+          origin: string | nil
+          destination: string | nil
+          departureLocal: string | nil
+          departureGMT: string | nil
+          offLocal: string | nil
+          offGMT: string | nil
+          arrivalLocal: string | nil
+          arrivalGMT: string | nil
+      actual:
+        type: object
+        properties:
+          aircraftType: string | nil
+          tail?: string | nil
+          make: string | nil
+          market: string | nil
+          origin: string | nil
+          destination: string | nil
+          departureLocal: string | nil
+          departureGMT: string | nil
+          offLocal: string | nil
+          offGMT: string | nil
+          arrivalLocal: string | nil
+          arrivalGMT: string | nil
+      departureStatus:
+        type: object
+        properties:
+          status: string
+          locationCode: string
+          terminal?: string | nil
+          gate?: string | nil
+          baggageClaim?: string | nil
+          domestic: boolean
+      arrivalStatus:
+        type: object
+        properties:
+          status: string
+          locationCode: string
+          terminal?: string | nil
+          gate?: string | nil
+          baggageClaim?: string | nil
+          domestic: boolean
+      delays?: array | nil
+      passengers?: object | nil
+      bags?: object | nil
+      dispositionReasons?: array | nil
+  paxNum: string
+  segment: string
+  firstName: string
+  lastName: string
+  middleName?: string | nil
+  dob: string
+  gender: string
+  knownTraveler: string | nil
+  redressNbr?: string | nil
+  confirmationNum: string
+  confirmationId: number
+  volunteer: boolean
+  bookType: string
+  employeeHireDate?: string | nil
+  carryOnBagCount: integer
+  checkedBagCount: integer
+  standByPassenger: boolean
+  standByPriority?: object | nil
+  acknowledgmentRequired: boolean
+  docsVerified: boolean
+  seats?: object | nil
+  bags:
+    items:
+      properties:
+        id?: number | nil
+        type: string
+        number: integer
+        fee: number
+        weight: integer
+        overweightLevel: integer
+        heavy: boolean
+        oversized: boolean
+        printed: boolean
+        equipmentType?: string | nil
+  boardingPass:
+    properties:
+      qrCodeBase64?: nil 
+      bar2DCodeBase64?: nil
+  authorization:
+    properties:
+      status: boolean
+      statusCode?: string | nil 
+      createdAt: string | nil
+      dhsTransmitted: boolean
+      bpSsss: boolean
+      travelDoc: boolean
+      sendToDhsEnabled: boolean
+      knownTraveler: boolean
+  checkIn:
+    properties:
+      status: boolean
+      withinWindow: boolean
+      method?: nil
+      groupZone: string
+      groupIndex: integer
+      createdAt?: string | nil
+      eligibility: 
+        items:
+          type: object
+          properties:
+            channel: integer
+            status: boolean
+            journeyStatusCode: string
+            travelerStatusCode: string
+      searchable: boolean
+  board:
+    type: object
+    properties:
+        status: boolean
+        createdAt: string | nil
+        eligibility: boolean
+        boardingZone: string
+  contacts: array | nil
+  ssrs?: nil
+  asrlStatus:
+    type: object
+    properties:
+      active: boolean
+      originalSeat?: string | nil
+      newSeat?: nil
+  emergencyContact?: nil
+  bagtags: array | nil
+  travelerIdentifications: array | nil
+  addressWhileInUS?: string | nil
+  finalDestination: string
+  securityCheckVerifiedId?: number | nil
